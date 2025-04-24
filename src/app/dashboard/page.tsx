@@ -27,8 +27,7 @@ import { QueryAnswering } from "@/components/QueryAnswering";
 import { WhatIfScenarios } from "@/components/WhatIfScenarios";
 import { ContactUs } from "@/components/ContactUs";
 import { AboutUs } from "@/components/AboutUs";
-import { PastInsights } from "@/components/PastInsights";
-import { PastQueries } from "@/components/PastQueries";
+import { PastInsights } from "@/components/PastQueries";
 import { LogOut, Contact2, Info, ListOrdered, Search, Brain, File, Flame, Moon, Sun } from "lucide-react";
 import { useTheme } from 'next-themes'
 import React from "react";
@@ -55,7 +54,12 @@ const support = [
 export default function Dashboard() {
   const [selectedFeature, setSelectedFeature] = useState<string | null>(null);
   const router = useRouter();
-  const { theme, setTheme } = useTheme();
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleFeatureClick = (featureName: string) => {
     setSelectedFeature(featureName);
@@ -80,21 +84,6 @@ export default function Dashboard() {
       </div>
     );
   }, [selectedFeature]);
-
-  // Ensure theme persistence on first load
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setTheme(localStorage.getItem('theme') === 'dark' ? 'dark' : 'light');
-    }
-  }, [setTheme]);
-
-  const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('theme', newTheme);
-    }
-  };
 
   return (
     <DashboardProvider>
@@ -148,9 +137,7 @@ export default function Dashboard() {
               <div className="flex-1 text-2xl font-semibold text-center">
                 {selectedFeature || "Welcome to WicketWise"}
               </div>
-              <Button variant="ghost" className="h-8 w-8 p-0 rounded-full" onClick={toggleTheme}>
-                {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
-              </Button>
+              {mounted && <ThemeToggle />}
               <span className="mx-2"></span> {/* Added spacing here */}
               <ProfileDropdown onLogout={handleLogout} />
             </header>
