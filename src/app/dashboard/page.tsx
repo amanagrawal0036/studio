@@ -33,6 +33,7 @@ import { PastInsights } from "@/components/PastInsights";
 import { PastQueries } from "@/components/PastQueries";
 import { cn } from "@/lib/utils";
 import { LogOut, Contact2, Info, ListOrdered, Search, Brain, File, Flame } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 
 const features = [
