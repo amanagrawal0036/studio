@@ -21,7 +21,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { GenerateSummary } from "@/components/GenerateSummary";
 import { HeadToHeadAnalyzer } from "@/components/HeadToHeadAnalyzer";
 import { QueryAnswering } from "@/components/QueryAnswering";
@@ -33,6 +33,12 @@ import { PastQueries } from "@/components/PastQueries";
 import { cn } from "@/lib/utils";
 import { LogOut, Contact2, Info, ListOrdered, Search, Brain, File, Flame } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import {
+  CardHeader as ShadCardHeader,
+  CardTitle as ShadCardTitle,
+  CardDescription as ShadCardDescription,
+  CardContent as ShadCardContent,
+} from "@/components/ui/card"
 
 
 const features = [
@@ -66,7 +72,14 @@ export default function Dashboard() {
   return (
     <SidebarProvider>
       <div className="md:flex min-h-screen bg-background">
-        <Sidebar className="w-64 border-r flex-shrink-0 z-20">
+        <header className="flex items-center justify-between p-4 border-b fixed top-0 right-0 w-full bg-background z-10">
+          <div className="text-2xl font-semibold">
+            {selectedFeature || "Welcome to WicketWise"}
+          </div>
+          <ProfileDropdown onLogout={handleLogout} />
+        </header>
+
+        <Sidebar className="w-64 border-r flex-shrink-0 z-20 mt-20 fixed h-full">
           <SidebarHeader>
             <h1 className="text-2xl font-semibold">WicketWise</h1>
           </SidebarHeader>
@@ -120,15 +133,8 @@ export default function Dashboard() {
           </SidebarFooter>
         </Sidebar>
 
-        <div className="flex-1 p-4">
-          <header className="flex items-center justify-between p-4 border-b fixed top-0 right-0 w-full bg-background z-10">
-            <div className="text-2xl font-semibold">
-              {selectedFeature || "Welcome to WicketWise"}
-            </div>
-            <ProfileDropdown onLogout={handleLogout} />
-          </header>
-
-          <main className="p-4 pt-20 h-full">
+        <div className="flex-1 p-4 pt-20">
+          <main className="h-full">
             {!selectedFeature ? (
               <div className="flex flex-col items-center justify-center h-full space-y-4">
                 <h2 className="text-3xl font-semibold">Hi User!</h2>
@@ -184,10 +190,10 @@ const ProfileDropdown = ({ onLogout }: { onLogout: () => void }) => {
       {isEditing && (
         <div className="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex items-center justify-center">
           <Card className="max-w-md w-full p-4">
-            <CardHeader>
-              <CardTitle>Edit Profile</CardTitle>
-            </CardHeader>
-            <CardContent className="grid gap-4">
+            <ShadCardHeader>
+              <ShadCardTitle>Edit Profile</ShadCardTitle>
+            </ShadCardHeader>
+            <ShadCardContent className="grid gap-4">
               <div className="grid gap-2">
                 <label htmlFor="name" className="text-right text-sm font-medium leading-none">
                   Name
@@ -216,7 +222,7 @@ const ProfileDropdown = ({ onLogout }: { onLogout: () => void }) => {
                 </Button>
                 <Button onClick={handleSave}>Save Changes</Button>
               </div>
-            </CardContent>
+            </ShadCardContent>
           </Card>
         </div>
       )}
