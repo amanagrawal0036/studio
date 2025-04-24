@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 type Insight = {
   type: string;
@@ -22,16 +22,39 @@ type DashboardContextType = {
 
 const DashboardContext = createContext<DashboardContextType | undefined>(undefined);
 
+const INSIGHTS_STORAGE_KEY = 'wicketwise_insights';
+const QUERIES_STORAGE_KEY = 'wicketwise_queries';
+
 export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [insights, setInsights] = useState<Insight[]>([]);
-  const [queries, setQueries] = useState<Query[]>([]);
+  const [insights, setInsights] = useState<Insight[]>(() => {
+    if (typeof window !== 'undefined') {
+      const storedInsights = localStorage.getItem(INSIGHTS_STORAGE_KEY);
+      return storedInsights ? JSON.parse(storedInsights) : [];
+    }
+    return [];
+  });
+  const [queries, setQueries] = useState<Query[]>(() => {
+    if (typeof window !== 'undefined') {
+      const storedQueries = localStorage.getItem(QUERIES_STORAGE_KEY);
+      return storedQueries ? JSON.parse(storedQueries) : [];
+    }
+    return [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem(INSIGHTS_STORAGE_KEY, JSON.stringify(insights));
+  }, [insights]);
+
+  useEffect(() => {
+    localStorage.setItem(QUERIES_STORAGE_KEY, JSON.stringify(queries));
+  }, [queries]);
 
   const addInsight = (insight: Insight) => {
-    setInsights([...insights, insight]);
+    setInsights(prevInsights => [...prevInsights, insight]);
   };
 
   const addQuery = (query: Query) => {
-    setQueries([...queries, query]);
+    setQueries(prevQueries => [...prevQueries, query]);
   };
 
   const value: DashboardContextType = {
