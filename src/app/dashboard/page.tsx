@@ -12,7 +12,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -22,7 +21,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { GenerateSummary } from "@/components/GenerateSummary";
 import { HeadToHeadAnalyzer } from "@/components/HeadToHeadAnalyzer";
 import { QueryAnswering } from "@/components/QueryAnswering";
@@ -67,7 +66,7 @@ export default function Dashboard() {
   return (
     <SidebarProvider>
       <div className="md:flex min-h-screen bg-background">
-        <Sidebar className="w-64 border-r flex-shrink-0">
+        <Sidebar className="w-64 border-r flex-shrink-0 z-20">
           <SidebarHeader>
             <h1 className="text-2xl font-semibold">WicketWise</h1>
           </SidebarHeader>
@@ -129,7 +128,7 @@ export default function Dashboard() {
             <ProfileDropdown onLogout={handleLogout} />
           </header>
 
-          <main className="p-4 pt-20">
+          <main className="p-4 pt-20 h-full">
             {!selectedFeature ? (
               <div className="flex flex-col items-center justify-center h-full space-y-4">
                 <h2 className="text-3xl font-semibold">Hi User!</h2>
