@@ -122,14 +122,14 @@ export default function Dashboard() {
         </Sidebar>
 
         <div className="flex-1 p-4">
-          <header className="flex items-center justify-between p-4 border-b">
+          <header className="flex items-center justify-between p-4 border-b fixed top-0 right-0 w-full bg-background z-10">
             <div className="text-2xl font-semibold">
               {selectedFeature || "Welcome to WicketWise"}
             </div>
             <ProfileDropdown onLogout={handleLogout} />
           </header>
 
-          <main className="p-4">
+          <main className="p-4 pt-20">
             {!selectedFeature ? (
               <div className="flex flex-col items-center justify-center h-full space-y-4">
                 <h2 className="text-3xl font-semibold">Hi User!</h2>
