@@ -77,8 +77,11 @@ export const WhatIfScenarios = () => {
           />
           <Button onClick={handleAskWicketWise}>Ask WicketWise</Button>
         </div>
-
+        <p className="text-xs text-muted-foreground mt-4">
+          This is a hypothetical analysis based on past data and trends. It is not a prediction or guarantee of actual outcomes.
+        </p>
       </CardContent>
     </Card>
   );
 };
+
