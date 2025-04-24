@@ -27,7 +27,8 @@ import { QueryAnswering } from "@/components/QueryAnswering";
 import { WhatIfScenarios } from "@/components/WhatIfScenarios";
 import { ContactUs } from "@/components/ContactUs";
 import { AboutUs } from "@/components/AboutUs";
-import { PastInsights } from "@/components/PastQueries";
+import { PastInsights } from "@/components/PastInsights";
+import { PastQueries } from "@/components/PastQueries";
 import { LogOut, Contact2, Info, ListOrdered, Search, Brain, File, Flame, Moon, Sun } from "lucide-react";
 import { useTheme } from 'next-themes'
 import React from "react";
@@ -54,7 +55,7 @@ const support = [
 export default function Dashboard() {
   const [selectedFeature, setSelectedFeature] = useState<string | null>(null);
   const router = useRouter();
-  const { theme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -84,6 +85,10 @@ export default function Dashboard() {
       </div>
     );
   }, [selectedFeature]);
+
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
+  };
 
   return (
     <DashboardProvider>
@@ -137,7 +142,7 @@ export default function Dashboard() {
               <div className="flex-1 text-2xl font-semibold text-center">
                 {selectedFeature || "Welcome to WicketWise"}
               </div>
-              {mounted && <ThemeToggle />}
+              {mounted && <ThemeToggle toggleTheme={toggleTheme} />}
               <span className="mx-2"></span> {/* Added spacing here */}
               <ProfileDropdown onLogout={handleLogout} />
             </header>
@@ -243,8 +248,12 @@ const ProfileDropdown = ({ onLogout }: { onLogout: () => void }) => {
   );
 };
 
-const ThemeToggle = () => {
-  const { theme, setTheme } = useTheme();
+interface ThemeToggleProps {
+  toggleTheme: () => void;
+}
+
+const ThemeToggle: React.FC<ThemeToggleProps> = ({ toggleTheme }) => {
+  const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   React.useEffect(() => {
@@ -256,7 +265,7 @@ const ThemeToggle = () => {
   }
 
   return (
-    <Button variant="ghost" className="h-8 w-8 p-0 rounded-full" onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
+    <Button variant="ghost" className="h-8 w-8 p-0 rounded-full" onClick={toggleTheme}>
       {theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
       <span className="sr-only">Toggle dark mode</span>
     </Button>
