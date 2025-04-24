@@ -13,6 +13,7 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -30,6 +31,7 @@ import { PastInsights } from "@/components/PastInsights";
 import { PastQueries } from "@/components/PastQueries";
 import { LogOut, Contact2, Info, ListOrdered, Search, Brain, File, Flame, Moon, Sun } from "lucide-react";
 import { useTheme } from 'next-themes'
+import React from "react";
 
 
 const features = [
@@ -144,9 +146,10 @@ export default function Dashboard() {
             <div className="flex-1 text-2xl font-semibold text-center">
               {selectedFeature || "Welcome to WicketWise"}
             </div>
-            <Button variant="ghost" className="h-8 w-8 p-0 rounded-full" onClick={toggleTheme}>
+             <Button variant="ghost" className="h-8 w-8 p-0 rounded-full" onClick={toggleTheme}>
               {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
             </Button>
+            <span className="mx-2"></span> {/* Added spacing here */}
             <ProfileDropdown onLogout={handleLogout} />
           </header>
 
@@ -216,7 +219,7 @@ const ProfileDropdown = ({ onLogout }: { onLogout: () => void }) => {
                 <label htmlFor="name" className="text-right text-sm font-medium leading-none">
                   Name
                 </label>
-                <input
+                <Input
                   type="text"
                   id="name"
                   value={tempProfile.name}
@@ -228,7 +231,7 @@ const ProfileDropdown = ({ onLogout }: { onLogout: () => void }) => {
                 <label htmlFor="email" className="text-right text-sm font-medium leading-none">
                   Email
                 </label>
-                <input
+                <Input
                   type="email"
                   id="email"
                   value={tempProfile.email}
@@ -247,5 +250,25 @@ const ProfileDropdown = ({ onLogout }: { onLogout: () => void }) => {
         </div>
       )}
     </DropdownMenu>
+  );
+};
+
+const ThemeToggle = () => {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
+
+  return (
+    <Button variant="ghost" className="h-8 w-8 p-0 rounded-full" onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
+      {theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+      <span className="sr-only">Toggle dark mode</span>
+    </Button>
   );
 };
