@@ -17,9 +17,9 @@ export const WhatIfScenarios = () => {
     // Add user's query to the chat
     setMessages([...messages, { sender: "user", text: currentQuery }]);
 
-    // Simulate AI response with disclaimer
+    // Simulate AI response
     setTimeout(() => {
-      const aiResponse = `This is a hypothetical analysis based on "${currentQuery}". This is for informational purposes only.`;
+      const aiResponse = `This is a hypothetical analysis based on "${currentQuery}".`;
       setMessages([...messages, { sender: "user", text: currentQuery }, { sender: "ai", text: aiResponse }]);
     }, 500);
 
@@ -45,11 +45,6 @@ export const WhatIfScenarios = () => {
               }`}
             >
               {message.text}
-              {message.sender === "ai" && (
-                <div className="mt-2 p-2 bg-accent text-accent-foreground rounded-md text-sm">
-                  This is a hypothetical analysis based on past data and trends. It is not a prediction or guarantee of actual outcomes.
-                </div>
-              )}
             </div>
           ))}
         </div>
@@ -70,6 +65,9 @@ export const WhatIfScenarios = () => {
         <Button variant="secondary" onClick={handleSaveScenario}>
           Save Scenario
         </Button>
+        <p className="text-xs text-muted-foreground mt-4">
+          This is a hypothetical analysis based on past data and trends. It is not a prediction or guarantee of actual outcomes.
+        </p>
       </CardContent>
     </Card>
   );
