@@ -6,7 +6,6 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarGroup,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -69,7 +68,7 @@ export default function Dashboard() {
 
   return (
     <SidebarProvider>
-      <div className="md:flex min-h-screen bg-background">
+      <div className="flex min-h-screen bg-background">
         <Sidebar className="w-64 border-r flex-shrink-0 z-20 h-full fixed top-0 left-0">
           <SidebarHeader>
             <h1 className="text-2xl font-semibold p-4">WicketWise</h1>
@@ -124,8 +123,8 @@ export default function Dashboard() {
           </SidebarFooter>
         </Sidebar>
 
-        <div className="flex-1 flex flex-col">
-          <header className="flex items-center justify-between p-4 border-b bg-background z-10 fixed top-0 w-full md:ml-64">
+        <div className="flex-1 flex flex-col md:ml-64">
+          <header className="flex items-center justify-between p-4 border-b bg-background z-10 fixed top-0 w-full">
             <div className="flex-1 text-2xl font-semibold text-center">
               {selectedFeature || "Welcome to WicketWise"}
             </div>
