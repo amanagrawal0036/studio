@@ -7,7 +7,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import type {Metadata} from 'next';
 
 // moved to page.tsx to avoid use client issues
 // export const metadata: Metadata = {
