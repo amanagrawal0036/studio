@@ -32,13 +32,6 @@ import { PastInsights } from "@/components/PastInsights";
 import { PastQueries } from "@/components/PastQueries";
 import { cn } from "@/lib/utils";
 import { LogOut, Contact2, Info, ListOrdered, Search, Brain, File, Flame } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import {
-  CardHeader as ShadCardHeader,
-  CardTitle as ShadCardTitle,
-  CardDescription as ShadCardDescription,
-  CardContent as ShadCardContent,
-} from "@/components/ui/card"
 
 
 const features = [
@@ -46,6 +39,10 @@ const features = [
   { name: "Head-to-Head Analyzer", component: HeadToHeadAnalyzer, icon: Search },
   { name: "Query Answering", component: QueryAnswering, icon: ListOrdered },
   { name: "What-If Scenarios", component: WhatIfScenarios, icon: Brain },
+  { name: "Contact Us", component: ContactUs, icon: Contact2 },
+  { name: "About Us", component: AboutUs, icon: Info },
+  { name: "Past Insights", component: PastInsights, icon: File },
+  { name: "Past Queries", component: PastQueries, icon: ListOrdered },
 ];
 
 export default function Dashboard() {
@@ -72,16 +69,9 @@ export default function Dashboard() {
   return (
     <SidebarProvider>
       <div className="md:flex min-h-screen bg-background">
-        <header className="flex items-center justify-between p-4 border-b fixed top-0 right-0 w-full bg-background z-10">
-          <div className="text-2xl font-semibold">
-            {selectedFeature || "Welcome to WicketWise"}
-          </div>
-          <ProfileDropdown onLogout={handleLogout} />
-        </header>
-
-        <Sidebar className="w-64 border-r flex-shrink-0 z-20 mt-20 fixed h-full">
+        <Sidebar className="w-64 border-r flex-shrink-0 z-20 h-full fixed top-0 left-0">
           <SidebarHeader>
-            <h1 className="text-2xl font-semibold">WicketWise</h1>
+            <h1 className="text-2xl font-semibold p-4">WicketWise</h1>
           </SidebarHeader>
           <SidebarContent>
             <SidebarMenu>
@@ -133,23 +123,32 @@ export default function Dashboard() {
           </SidebarFooter>
         </Sidebar>
 
-        <div className="flex-1 p-4 pt-20">
-          <main className="h-full">
-            {!selectedFeature ? (
-              <div className="flex flex-col items-center justify-center h-full space-y-4">
-                <h2 className="text-3xl font-semibold">Hi User!</h2>
-                <p className="text-muted-foreground">Welcome to WicketWise – your personal IPL data assistant.</p>
-                <div className="flex space-x-4">
-                  <Button onClick={() => handleFeatureClick("Generate Summary")}>Generate Summary</Button>
-                  <Button onClick={() => handleFeatureClick("Head-to-Head Analyzer")}>Head-to-Head</Button>
-                  <Button onClick={() => handleFeatureClick("Query Answering")}>Query Answering</Button>
-                  <Button onClick={() => handleFeatureClick("What-If Scenarios")}>What-If Scenarios</Button>
+        <div className="flex-1 flex flex-col">
+          <header className="flex items-center justify-between p-4 border-b bg-background z-10">
+            <div className="text-2xl font-semibold">
+              {selectedFeature || "Welcome to WicketWise"}
+            </div>
+            <ProfileDropdown onLogout={handleLogout} />
+          </header>
+
+          <div className="p-4 h-full">
+            <main className="h-full">
+              {!selectedFeature ? (
+                <div className="flex flex-col items-center justify-center h-full space-y-4">
+                  <h2 className="text-3xl font-semibold">Hi User!</h2>
+                  <p className="text-muted-foreground">Welcome to WicketWise – your personal IPL data assistant.</p>
+                  <div className="flex space-x-4">
+                    <Button onClick={() => handleFeatureClick("Generate Summary")}>Generate Summary</Button>
+                    <Button onClick={() => handleFeatureClick("Head-to-Head Analyzer")}>Head-to-Head</Button>
+                    <Button onClick={() => handleFeatureClick("Query Answering")}>Query Answering</Button>
+                    <Button onClick={() => handleFeatureClick("What-If Scenarios")}>What-If Scenarios</Button>
+                  </div>
                 </div>
-              </div>
-            ) : (
-              renderFeatureComponent()
-            )}
-          </main>
+              ) : (
+                renderFeatureComponent()
+              )}
+            </main>
+          </div>
         </div>
       </div>
     </SidebarProvider>
@@ -190,10 +189,10 @@ const ProfileDropdown = ({ onLogout }: { onLogout: () => void }) => {
       {isEditing && (
         <div className="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex items-center justify-center">
           <Card className="max-w-md w-full p-4">
-            <ShadCardHeader>
-              <ShadCardTitle>Edit Profile</ShadCardTitle>
-            </ShadCardHeader>
-            <ShadCardContent className="grid gap-4">
+            <CardHeader>
+              <CardTitle>Edit Profile</CardTitle>
+            </CardHeader>
+            <CardContent className="grid gap-4">
               <div className="grid gap-2">
                 <label htmlFor="name" className="text-right text-sm font-medium leading-none">
                   Name
@@ -222,7 +221,7 @@ const ProfileDropdown = ({ onLogout }: { onLogout: () => void }) => {
                 </Button>
                 <Button onClick={handleSave}>Save Changes</Button>
               </div>
-            </ShadCardContent>
+            </CardContent>
           </Card>
         </div>
       )}
