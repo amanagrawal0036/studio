@@ -39,10 +39,17 @@ export const HeadToHeadAnalyzer = () => {
 
   const handleSaveComparison = () => {
     if (stats1 && stats2) {
+      const comparisonData = {
+        entity1: entity1,
+        entity2: entity2,
+        stats1: stats1,
+        stats2: stats2,
+      };
+
       addInsight({
         type: "comparison",
         query: `Comparison between ${entity1} and ${entity2} by ${compareBy}`,
-        result: `Stats for ${entity1}: ${JSON.stringify(stats1)}, Stats for ${entity2}: ${JSON.stringify(stats2)}`,
+        result: JSON.stringify(comparisonData),
       });
       toast({
         title: "Comparison Saved",
@@ -111,19 +118,16 @@ export const HeadToHeadAnalyzer = () => {
 };
 
 const StatCard = ({ title, stats }: { title: string; stats: IplStats }) => {
-  const betterStyle = "font-semibold text-accent"; // Style for highlighting better stats
-
   return (
     <Card>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
-        <p>Matches Played: <span className={stats.matchesPlayed > mockStats2.matchesPlayed ? betterStyle : ""}>{stats.matchesPlayed}</span></p>
-        <p>Runs Scored: <span className={stats.runsScored > mockStats2.runsScored ? betterStyle : ""}>{stats.runsScored}</span></p>
-        <p>Wickets Taken: <span className={stats.wicketsTaken > mockStats2.wicketsTaken ? betterStyle : ""}>{stats.wicketsTaken}</span></p>
-        <p>Batting Average: <span className={stats.battingAverage > mockStats2.battingAverage ? betterStyle : ""}>{stats.battingAverage}</span></p>
-
+        <p>Matches Played: {stats.matchesPlayed}</p>
+        <p>Runs Scored: {stats.runsScored}</p>
+        <p>Wickets Taken: {stats.wicketsTaken}</p>
+        <p>Batting Average: {stats.battingAverage}</p>
       </CardContent>
     </Card>
   );
