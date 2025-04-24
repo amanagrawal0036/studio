@@ -20,7 +20,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { GenerateSummary } from "@/components/GenerateSummary";
 import { HeadToHeadAnalyzer } from "@/components/HeadToHeadAnalyzer";
 import { QueryAnswering } from "@/components/QueryAnswering";
@@ -103,9 +103,8 @@ export default function Dashboard() {
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
-          </SidebarContent>
-          <SidebarFooter>
             <SidebarMenu>
+              <li className="px-4 py-2 font-semibold text-sm text-muted-foreground">Support</li>
               {support.map((item) => (
                 <SidebarMenuItem key={item.name}>
                   <SidebarMenuButton onClick={() => handleFeatureClick(item.name)} icon={item.icon}>
@@ -115,6 +114,8 @@ export default function Dashboard() {
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
+          </SidebarContent>
+          <SidebarFooter>
           </SidebarFooter>
         </Sidebar>
 
