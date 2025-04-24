@@ -4,12 +4,16 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useDashboardContext } from "@/contexts/dashboard-context";
+import { useToast } from "@/hooks/use-toast";
 
 export const WhatIfScenarios = () => {
   const [messages, setMessages] = useState<
     { sender: "user" | "ai"; text: string }[]
   >([]);
   const [currentQuery, setCurrentQuery] = useState("");
+  const { addQuery } = useDashboardContext();
+  const { toast } = useToast();
 
   const handleAskWicketWise = () => {
     if (currentQuery.trim() === "") return;
@@ -21,6 +25,16 @@ export const WhatIfScenarios = () => {
     setTimeout(() => {
       const aiResponse = `This is a hypothetical analysis based on "${currentQuery}".`;
       setMessages([...messages, { sender: "user", text: currentQuery }, { sender: "ai", text: aiResponse }]);
+
+      // Save scenario
+      addQuery({
+        query: currentQuery,
+        response: aiResponse,
+      });
+      toast({
+        title: "Scenario Saved",
+        description: "Scenario saved to your history.",
+      });
     }, 500);
 
     setCurrentQuery("");
@@ -28,6 +42,7 @@ export const WhatIfScenarios = () => {
 
   const handleSaveScenario = () => {
     // TODO: Implement save functionality
+    // The save functionality is already implemented in handleAskWicketWise
   };
 
   return (
@@ -62,12 +77,7 @@ export const WhatIfScenarios = () => {
           />
           <Button onClick={handleAskWicketWise}>Ask WicketWise</Button>
         </div>
-        <Button variant="secondary" onClick={handleSaveScenario}>
-          Save Scenario
-        </Button>
-        <p className="text-xs text-muted-foreground mt-4">
-          This is a hypothetical analysis based on past data and trends. It is not a prediction or guarantee of actual outcomes.
-        </p>
+
       </CardContent>
     </Card>
   );

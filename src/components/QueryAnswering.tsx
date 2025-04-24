@@ -4,12 +4,16 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useDashboardContext } from "@/contexts/dashboard-context";
+import { useToast } from "@/hooks/use-toast";
 
 export const QueryAnswering = () => {
   const [messages, setMessages] = useState<
     { sender: "user" | "ai"; text: string }[]
   >([]);
   const [currentQuery, setCurrentQuery] = useState("");
+  const { addQuery } = useDashboardContext();
+  const { toast } = useToast();
 
   const handleAskWicketWise = () => {
     if (currentQuery.trim() === "") return;
@@ -21,6 +25,16 @@ export const QueryAnswering = () => {
     setTimeout(() => {
       const aiResponse = `This is a mock response to "${currentQuery}".`;
       setMessages([...messages, { sender: "user", text: currentQuery }, { sender: "ai", text: aiResponse }]);
+
+      // Save query and response
+      addQuery({
+        query: currentQuery,
+        response: aiResponse,
+      });
+      toast({
+        title: "Query Saved",
+        description: "Query and response saved to your history.",
+      });
     }, 500);
 
     setCurrentQuery("");

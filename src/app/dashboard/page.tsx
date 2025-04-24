@@ -32,6 +32,7 @@ import { PastQueries } from "@/components/PastQueries";
 import { LogOut, Contact2, Info, ListOrdered, Search, Brain, File, Flame, Moon, Sun } from "lucide-react";
 import { useTheme } from 'next-themes'
 import React from "react";
+import { DashboardProvider } from "@/contexts/dashboard-context";
 
 
 const features = [
@@ -96,84 +97,86 @@ export default function Dashboard() {
   };
 
   return (
-    <SidebarProvider>
-      <div className="flex min-h-screen bg-background">
-        <Sidebar className="w-64 border-r flex-shrink-0 z-20 h-full fixed top-0 left-0">
-          <SidebarHeader>
-            <h1 className="text-2xl font-semibold p-4">WicketWise</h1>
-          </SidebarHeader>
-          <SidebarContent className="mt-4">
-            <SidebarMenu>
-              <li className="px-4 py-2 font-semibold text-sm text-muted-foreground">History</li>
-              {history.map((item) => (
-                <SidebarMenuItem key={item.name}>
-                  <SidebarMenuButton onClick={() => handleFeatureClick(item.name)} icon={item.icon}>
-                    {item.icon && <item.icon className="mr-2 h-4 w-4" />}
-                    {item.name}
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-            <SidebarMenu>
-              <li className="px-4 py-2 font-semibold text-sm text-muted-foreground">Features</li>
-              {features.map((item) => (
-                <SidebarMenuItem key={item.name}>
-                  <SidebarMenuButton onClick={() => handleFeatureClick(item.name)} icon={item.icon}>
-                    {item.icon && <item.icon className="mr-2 h-4 w-4" />}
-                    {item.name}
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-            <SidebarMenu>
-              <li className="px-4 py-2 font-semibold text-sm text-muted-foreground">Support</li>
-              {support.map((item) => (
-                <SidebarMenuItem key={item.name}>
-                  <SidebarMenuButton onClick={() => handleFeatureClick(item.name)} icon={item.icon}>
-                    {item.icon && <item.icon className="mr-2 h-4 w-4" />}
-                    {item.name}
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarContent>
-          <SidebarFooter>
-          </SidebarFooter>
-        </Sidebar>
+    <DashboardProvider>
+      <SidebarProvider>
+        <div className="flex min-h-screen bg-background">
+          <Sidebar className="w-64 border-r flex-shrink-0 z-20 h-full fixed top-0 left-0">
+            <SidebarHeader>
+              <h1 className="text-2xl font-semibold p-4">WicketWise</h1>
+            </SidebarHeader>
+            <SidebarContent className="mt-4">
+              <SidebarMenu>
+                <li className="px-4 py-2 font-semibold text-sm text-muted-foreground">History</li>
+                {history.map((item) => (
+                  <SidebarMenuItem key={item.name}>
+                    <SidebarMenuButton onClick={() => handleFeatureClick(item.name)} icon={item.icon}>
+                      {item.icon && <item.icon className="mr-2 h-4 w-4" />}
+                      {item.name}
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+              <SidebarMenu>
+                <li className="px-4 py-2 font-semibold text-sm text-muted-foreground">Features</li>
+                {features.map((item) => (
+                  <SidebarMenuItem key={item.name}>
+                    <SidebarMenuButton onClick={() => handleFeatureClick(item.name)} icon={item.icon}>
+                      {item.icon && <item.icon className="mr-2 h-4 w-4" />}
+                      {item.name}
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+              <SidebarMenu>
+                <li className="px-4 py-2 font-semibold text-sm text-muted-foreground">Support</li>
+                {support.map((item) => (
+                  <SidebarMenuItem key={item.name}>
+                    <SidebarMenuButton onClick={() => handleFeatureClick(item.name)} icon={item.icon}>
+                      {item.icon && <item.icon className="mr-2 h-4 w-4" />}
+                      {item.name}
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarContent>
+            <SidebarFooter>
+            </SidebarFooter>
+          </Sidebar>
 
-        <div className="flex-1 flex flex-col md:ml-64">
-          <header className="flex items-center justify-between p-4 border-b bg-background z-10 fixed top-0 right-0 left-64">
-            <div className="flex-1 text-2xl font-semibold text-center">
-              {selectedFeature || "Welcome to WicketWise"}
-            </div>
-             <Button variant="ghost" className="h-8 w-8 p-0 rounded-full" onClick={toggleTheme}>
-              {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
-            </Button>
-            <span className="mx-2"></span> {/* Added spacing here */}
-            <ProfileDropdown onLogout={handleLogout} />
-          </header>
+          <div className="flex-1 flex flex-col md:ml-64">
+            <header className="flex items-center justify-between p-4 border-b bg-background z-10 fixed top-0 right-0 left-64">
+              <div className="flex-1 text-2xl font-semibold text-center">
+                {selectedFeature || "Welcome to WicketWise"}
+              </div>
+              <Button variant="ghost" className="h-8 w-8 p-0 rounded-full" onClick={toggleTheme}>
+                {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+              </Button>
+              <span className="mx-2"></span> {/* Added spacing here */}
+              <ProfileDropdown onLogout={handleLogout} />
+            </header>
 
-          <div className="p-4 h-full mt-16">
-            <main className="h-full">
-              {!selectedFeature ? (
-                <div className="flex flex-col items-center justify-center h-full space-y-4">
-                  <h2 className="text-3xl font-semibold">Hi User!</h2>
-                  <p className="text-muted-foreground">Welcome to WicketWise – your personal IPL data assistant.</p>
-                  <div className="flex space-x-4">
-                    <Button onClick={() => handleFeatureClick("Generate Summary")}>Generate Summary</Button>
-                    <Button onClick={() => handleFeatureClick("Head-to-Head Analyzer")}>Head-to-Head</Button>
-                    <Button onClick={() => handleFeatureClick("Query Answering")}>Query Answering</Button>
-                    <Button onClick={() => handleFeatureClick("What-If Scenarios")}>What-If Scenarios</Button>
+            <div className="p-4 h-full mt-16">
+              <main className="h-full">
+                {!selectedFeature ? (
+                  <div className="flex flex-col items-center justify-center h-full space-y-4">
+                    <h2 className="text-3xl font-semibold">Hi User!</h2>
+                    <p className="text-muted-foreground">Welcome to WicketWise – your personal IPL data assistant.</p>
+                    <div className="flex space-x-4">
+                      <Button onClick={() => handleFeatureClick("Generate Summary")}>Generate Summary</Button>
+                      <Button onClick={() => handleFeatureClick("Head-to-Head Analyzer")}>Head-to-Head</Button>
+                      <Button onClick={() => handleFeatureClick("Query Answering")}>Query Answering</Button>
+                      <Button onClick={() => handleFeatureClick("What-If Scenarios")}>What-If Scenarios</Button>
+                    </div>
                   </div>
-                </div>
-              ) : (
-                renderFeatureComponent()
-              )}
-            </main>
+                ) : (
+                  renderFeatureComponent()
+                )}
+              </main>
+            </div>
           </div>
         </div>
-      </div>
-    </SidebarProvider>
+      </SidebarProvider>
+    </DashboardProvider>
   );
 }
 

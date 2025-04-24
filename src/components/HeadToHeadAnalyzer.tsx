@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { IplStats } from "@/services/ipl";
+import { useToast } from "@/hooks/use-toast";
+import { useDashboardContext } from "@/contexts/dashboard-context";
 
 const mockStats1: IplStats = {
   matchesPlayed: 150,
@@ -26,11 +28,33 @@ export const HeadToHeadAnalyzer = () => {
   const [entity2, setEntity2] = useState("");
   const [stats1, setStats1] = useState<IplStats | null>(null);
   const [stats2, setStats2] = useState<IplStats | null>(null);
+  const { toast } = useToast();
+  const { addInsight } = useDashboardContext();
 
   const handleCompareEntities = async () => {
     // Placeholder: Replace with actual backend calls to fetch stats
     setStats1(mockStats1);
     setStats2(mockStats2);
+  };
+
+  const handleSaveComparison = () => {
+    if (stats1 && stats2) {
+      addInsight({
+        type: "comparison",
+        query: `Comparison between ${entity1} and ${entity2} by ${compareBy}`,
+        result: `Stats for ${entity1}: ${JSON.stringify(stats1)}, Stats for ${entity2}: ${JSON.stringify(stats2)}`,
+      });
+      toast({
+        title: "Comparison Saved",
+        description: "Comparison saved to your history.",
+      });
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "No comparison to save.",
+      });
+    }
   };
 
   return (
@@ -78,6 +102,7 @@ export const HeadToHeadAnalyzer = () => {
           <div className="grid grid-cols-2 gap-4 mt-4">
             <StatCard title="Entity 1 Stats" stats={stats1} />
             <StatCard title="Entity 2 Stats" stats={stats2} />
+             <Button variant="secondary" onClick={handleSaveComparison}>Save Comparison</Button>
           </div>
         )}
       </CardContent>
@@ -98,7 +123,7 @@ const StatCard = ({ title, stats }: { title: string; stats: IplStats }) => {
         <p>Runs Scored: <span className={stats.runsScored > mockStats2.runsScored ? betterStyle : ""}>{stats.runsScored}</span></p>
         <p>Wickets Taken: <span className={stats.wicketsTaken > mockStats2.wicketsTaken ? betterStyle : ""}>{stats.wicketsTaken}</span></p>
         <p>Batting Average: <span className={stats.battingAverage > mockStats2.battingAverage ? betterStyle : ""}>{stats.battingAverage}</span></p>
-        <Button variant="secondary">Save Comparison</Button>
+
       </CardContent>
     </Card>
   );

@@ -6,12 +6,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { generateSummary } from "@/ai/flows/generate-summary";
+import { useDashboardContext } from "@/contexts/dashboard-context";
 
 export const GenerateSummary = () => {
   const [prompt, setPrompt] = useState("");
   const [summary, setSummary] = useState("");
   const [isLoading, setIsLoading] = useState(false);
     const { toast } = useToast();
+    const { addInsight } = useDashboardContext();
 
   const handleGenerateSummary = async () => {
     setIsLoading(true);
@@ -36,11 +38,23 @@ export const GenerateSummary = () => {
   };
 
   const handleSaveSummary = () => {
-        toast({
-            title: "Summary Saved",
-            description: "Summary saved to your history.",
-        });
-    // TODO: Implement save functionality
+    if (summary) {
+      addInsight({
+        type: "summary",
+        query: prompt,
+        result: summary,
+      });
+      toast({
+        title: "Summary Saved",
+        description: "Summary saved to your history.",
+      });
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "No summary to save.",
+      });
+    }
   };
 
   return (
