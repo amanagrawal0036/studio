@@ -70,13 +70,17 @@ export default function Dashboard() {
 
     if (!feature) return <div>Feature not found</div>;
 
-    return <feature.component />;
+    return (
+      <div className="h-full">
+        <feature.component />
+      </div>
+    );
   }, [selectedFeature]);
 
   return (
     <SidebarProvider>
       <div className="flex min-h-screen bg-background">
-        <Sidebar className="w-64 border-r flex-shrink-0 z-10 h-full fixed top-0 left-0">
+        <Sidebar className="w-64 border-r flex-shrink-0 z-20 h-full fixed top-0 left-0">
           <SidebarHeader>
             <h1 className="text-2xl font-semibold p-4">WicketWise</h1>
           </SidebarHeader>
@@ -226,4 +230,3 @@ const ProfileDropdown = ({ onLogout }: { onLogout: () => void }) => {
     </DropdownMenu>
   );
 };
-
