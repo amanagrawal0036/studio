@@ -20,7 +20,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { GenerateSummary } from "@/components/GenerateSummary";
 import { HeadToHeadAnalyzer } from "@/components/HeadToHeadAnalyzer";
 import { QueryAnswering } from "@/components/QueryAnswering";
@@ -76,7 +76,7 @@ export default function Dashboard() {
   return (
     <SidebarProvider>
       <div className="flex min-h-screen bg-background">
-        <Sidebar className="w-64 border-r flex-shrink-0 z-20 h-full fixed top-0 left-0">
+        <Sidebar className="w-64 border-r flex-shrink-0 z-10 h-full fixed top-0 left-0">
           <SidebarHeader>
             <h1 className="text-2xl font-semibold p-4">WicketWise</h1>
           </SidebarHeader>
@@ -120,7 +120,7 @@ export default function Dashboard() {
         </Sidebar>
 
         <div className="flex-1 flex flex-col md:ml-64">
-          <header className="flex items-center justify-between p-4 border-b bg-background z-10 fixed top-0 w-full">
+          <header className="flex items-center justify-between p-4 border-b bg-background z-10 fixed top-0 right-0 left-64">
             <div className="flex-1 text-2xl font-semibold text-center">
               {selectedFeature || "Welcome to WicketWise"}
             </div>
@@ -226,3 +226,4 @@ const ProfileDropdown = ({ onLogout }: { onLogout: () => void }) => {
     </DropdownMenu>
   );
 };
+
