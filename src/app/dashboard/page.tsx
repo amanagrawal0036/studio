@@ -20,7 +20,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Card } from "@/components/ui/card";
+import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { GenerateSummary } from "@/components/GenerateSummary";
 import { HeadToHeadAnalyzer } from "@/components/HeadToHeadAnalyzer";
 import { QueryAnswering } from "@/components/QueryAnswering";
@@ -29,7 +29,7 @@ import { ContactUs } from "@/components/ContactUs";
 import { AboutUs } from "@/components/AboutUs";
 import { PastInsights } from "@/components/PastInsights";
 import { PastQueries } from "@/components/PastQueries";
-import { LogOut, Contact2, Info, ListOrdered, Search, Brain, File } from "lucide-react";
+import { LogOut, Contact2, Info, ListOrdered, Search, Brain, File, Flame } from "lucide-react";
 
 
 const features = [
