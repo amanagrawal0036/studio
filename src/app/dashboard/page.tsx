@@ -126,7 +126,7 @@ export default function Dashboard() {
 
         <div className="flex-1 flex flex-col">
           <header className="flex items-center justify-between p-4 border-b bg-background z-10 fixed top-0 w-full md:ml-64">
-            <div className="text-2xl font-semibold">
+            <div className="flex-1 text-2xl font-semibold text-center">
               {selectedFeature || "Welcome to WicketWise"}
             </div>
             <ProfileDropdown onLogout={handleLogout} />
