@@ -22,10 +22,11 @@ const poppins = Poppins({
   weight: ['400', '500', '600', '700'],
 });
 
-export const metadata: Metadata = {
-  title: 'WicketWise',
-  description: 'Your personal AI IPL data assistant',
-};
+// moved to page.tsx to avoid use client issues
+// export const metadata: Metadata = {
+//   title: 'WicketWise',
+//   description: 'Your personal AI IPL data assistant',
+// };
 
 export default function RootLayout({
   children,
