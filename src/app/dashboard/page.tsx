@@ -32,6 +32,7 @@ import { PastInsights } from "@/components/PastInsights";
 import { PastQueries } from "@/components/PastQueries";
 import { cn } from "@/lib/utils";
 import { LogOut, Contact2, Info, ListOrdered, Search, Brain, File, Flame } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 
 const features = [
@@ -73,7 +74,7 @@ export default function Dashboard() {
           <SidebarHeader>
             <h1 className="text-2xl font-semibold p-4">WicketWise</h1>
           </SidebarHeader>
-          <SidebarContent>
+          <SidebarContent className="mt-4">
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton onClick={() => handleFeatureClick("Past Insights")} icon={File}>
@@ -124,14 +125,14 @@ export default function Dashboard() {
         </Sidebar>
 
         <div className="flex-1 flex flex-col">
-          <header className="flex items-center justify-between p-4 border-b bg-background z-10">
+          <header className="flex items-center justify-between p-4 border-b bg-background z-10 fixed top-0 w-full md:ml-64">
             <div className="text-2xl font-semibold">
               {selectedFeature || "Welcome to WicketWise"}
             </div>
             <ProfileDropdown onLogout={handleLogout} />
           </header>
 
-          <div className="p-4 h-full">
+          <div className="p-4 h-full mt-16">
             <main className="h-full">
               {!selectedFeature ? (
                 <div className="flex flex-col items-center justify-center h-full space-y-4">
