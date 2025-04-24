@@ -20,7 +20,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { GenerateSummary } from "@/components/GenerateSummary";
 import { HeadToHeadAnalyzer } from "@/components/HeadToHeadAnalyzer";
 import { QueryAnswering } from "@/components/QueryAnswering";
@@ -29,9 +29,7 @@ import { ContactUs } from "@/components/ContactUs";
 import { AboutUs } from "@/components/AboutUs";
 import { PastInsights } from "@/components/PastInsights";
 import { PastQueries } from "@/components/PastQueries";
-import { cn } from "@/lib/utils";
-import { LogOut, Contact2, Info, ListOrdered, Search, Brain, File, Flame } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { LogOut, Contact2, Info, ListOrdered, Search, Brain, File } from "lucide-react";
 
 
 const features = [
@@ -39,10 +37,16 @@ const features = [
   { name: "Head-to-Head Analyzer", component: HeadToHeadAnalyzer, icon: Search },
   { name: "Query Answering", component: QueryAnswering, icon: ListOrdered },
   { name: "What-If Scenarios", component: WhatIfScenarios, icon: Brain },
-  { name: "Contact Us", component: ContactUs, icon: Contact2 },
-  { name: "About Us", component: AboutUs, icon: Info },
+];
+
+const history = [
   { name: "Past Insights", component: PastInsights, icon: File },
   { name: "Past Queries", component: PastQueries, icon: ListOrdered },
+];
+
+const support = [
+  { name: "Contact Us", component: ContactUs, icon: Contact2 },
+  { name: "About Us", component: AboutUs, icon: Info },
 ];
 
 export default function Dashboard() {
@@ -60,11 +64,14 @@ export default function Dashboard() {
   const renderFeatureComponent = useCallback(() => {
     if (!selectedFeature) return null;
 
-    const feature = features.find((f) => f.name === selectedFeature);
+    let feature = features.find((f) => f.name === selectedFeature);
+    if (!feature) feature = history.find((h) => h.name === selectedFeature);
+    if (!feature) feature = support.find((s) => s.name === selectedFeature);
+
     if (!feature) return <div>Feature not found</div>;
 
     return <feature.component />;
-  }, [selectedFeature, features]);
+  }, [selectedFeature]);
 
   return (
     <SidebarProvider>
@@ -75,50 +82,38 @@ export default function Dashboard() {
           </SidebarHeader>
           <SidebarContent className="mt-4">
             <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton onClick={() => handleFeatureClick("Past Insights")} icon={File}>
-                  📁 Past Insights
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton onClick={() => handleFeatureClick("Past Queries")} icon={ListOrdered}>
-                  📜 Past Queries
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton onClick={() => handleFeatureClick("Generate Summary")} icon={Flame}>
-                  📊 Generate Summary
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton onClick={() => handleFeatureClick("Head-to-Head Analyzer")} icon={Search}>
-                  ⚔️ Head-to-Head Analyzer
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton onClick={() => handleFeatureClick("Query Answering")} icon={ListOrdered}>
-                  ❓ Query Answering
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton onClick={() => handleFeatureClick("What-If Scenarios")} icon={Brain}>
-                  🧠 What-If Scenarios
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+              <li className="px-4 py-2 font-semibold text-sm text-muted-foreground">History</li>
+              {history.map((item) => (
+                <SidebarMenuItem key={item.name}>
+                  <SidebarMenuButton onClick={() => handleFeatureClick(item.name)} icon={item.icon}>
+                    {item.icon && <item.icon className="mr-2 h-4 w-4" />}
+                    {item.name}
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+            <SidebarMenu>
+              <li className="px-4 py-2 font-semibold text-sm text-muted-foreground">Features</li>
+              {features.map((item) => (
+                <SidebarMenuItem key={item.name}>
+                  <SidebarMenuButton onClick={() => handleFeatureClick(item.name)} icon={item.icon}>
+                    {item.icon && <item.icon className="mr-2 h-4 w-4" />}
+                    {item.name}
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
             </SidebarMenu>
           </SidebarContent>
           <SidebarFooter>
             <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton onClick={() => handleFeatureClick("Contact Us")} icon={Contact2}>
-                  📞 Contact Us
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton onClick={() => handleFeatureClick("About Us")} icon={Info}>
-                  ℹ️ About Us
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+              {support.map((item) => (
+                <SidebarMenuItem key={item.name}>
+                  <SidebarMenuButton onClick={() => handleFeatureClick(item.name)} icon={item.icon}>
+                    {item.icon && <item.icon className="mr-2 h-4 w-4" />}
+                    {item.name}
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
             </SidebarMenu>
           </SidebarFooter>
         </Sidebar>
@@ -197,22 +192,24 @@ const ProfileDropdown = ({ onLogout }: { onLogout: () => void }) => {
                 <label htmlFor="name" className="text-right text-sm font-medium leading-none">
                   Name
                 </label>
-                <Input
+                <input
                   type="text"
                   id="name"
                   value={tempProfile.name}
                   onChange={(e) => setTempProfile({ ...tempProfile, name: e.target.value })}
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 />
               </div>
               <div className="grid gap-2">
                 <label htmlFor="email" className="text-right text-sm font-medium leading-none">
                   Email
                 </label>
-                <Input
+                <input
                   type="email"
                   id="email"
                   value={tempProfile.email}
                   onChange={(e) => setTempProfile({ ...tempProfile, email: e.target.value })}
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 />
               </div>
               <div className="flex justify-end space-x-2">
