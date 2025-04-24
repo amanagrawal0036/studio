@@ -1,7 +1,10 @@
+'use client';
+
 import type {Metadata} from 'next';
 import {Geist, Geist_Mono, Poppins} from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from 'next-themes'
+import { useEffect, useState } from 'react';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -29,6 +32,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [mounted, setMounted] = useState(false);
+
+  // useEffect to ensure code runs only on the client-side
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // If not mounted yet, return null to prevent rendering on the server
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <html lang="en">
       <body className={`${poppins.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}>
