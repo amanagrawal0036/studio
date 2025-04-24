@@ -33,6 +33,7 @@ import { LogOut, Contact2, Info, ListOrdered, Search, Brain, File, Flame, Moon, 
 import { useTheme } from 'next-themes'
 import React from "react";
 import { DashboardProvider } from "@/contexts/dashboard-context";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
 
 const features = [
