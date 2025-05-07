@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { FormEvent, useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +9,7 @@ import { useDashboardContext } from "@/contexts/dashboard-context";
 import { useToast } from "@/hooks/use-toast";
 
 export const QueryAnswering = () => {
+  const [answer, setAnswer] = useState("");
   const [messages, setMessages] = useState<
     { sender: "user" | "ai"; text: string }[]
   >([]);
@@ -15,29 +17,32 @@ export const QueryAnswering = () => {
   const { addQuery } = useDashboardContext();
   const { toast } = useToast();
 
-  const handleAskWicketWise = () => {
-    if (currentQuery.trim() === "") return;
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    if (currentQuery.trim() !== "") {
+      // Add user's query to the chat
+      const newMessages = [
+        ...messages,
+        { sender: "user", text: currentQuery },
+      ];
+      setMessages(newMessages);
 
-    // Add user's query to the chat
-    setMessages([...messages, { sender: "user", text: currentQuery }]);
-
-    // Simulate AI response (replace with actual LLM call)
-    setTimeout(() => {
-      const aiResponse = `This is a mock response to "${currentQuery}".`;
-      setMessages([...messages, { sender: "user", text: currentQuery }, { sender: "ai", text: aiResponse }]);
-
-      // Save query and response
-      addQuery({
-        query: currentQuery,
-        response: aiResponse,
-      });
-      toast({
-        title: "Query Saved",
-        description: "Query and response saved to your history.",
-      });
-    }, 500);
-
-    setCurrentQuery("");
+      try {
+        const result = await answerQueryFromPython(currentQuery);
+        const newMessages2 = [
+          ...newMessages,
+          { sender: "ai", text: result },
+        ];
+        setMessages(newMessages2);
+        addQuery({
+          query: currentQuery,
+          response: result,
+        });
+      } catch(e){
+        console.log(e);
+      }
+      setCurrentQuery("");
+    }
   };
 
   return (
@@ -61,16 +66,14 @@ export const QueryAnswering = () => {
         <div className="flex space-x-2">
           <Input
             type="text"
-            placeholder="Ask WicketWise"
+            placeholder="Ask"
             value={currentQuery}
             onChange={(e) => setCurrentQuery(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                handleAskWicketWise();
-              }
+              if (e.key === "Enter") handleSubmit(e);
             }}
           />
-          <Button onClick={handleAskWicketWise}>Ask WicketWise</Button>
+          <Button onClick={handleSubmit}>Ask</Button>
         </div>
       </CardContent>
     </Card>
